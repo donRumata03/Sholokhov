@@ -24,12 +24,21 @@
     <ClCompile Include="file_walker.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="estimater.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="art_parser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="file_walker.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="estimater.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="plotter.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

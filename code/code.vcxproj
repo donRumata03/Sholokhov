@@ -138,12 +138,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="art_parser.cpp" />
+    <ClCompile Include="estimater.cpp" />
     <ClCompile Include="file_walker.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="art_parser.h" />
+    <ClInclude Include="estimater.h" />
     <ClInclude Include="file_walker.h" />
+    <ClInclude Include="plotter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

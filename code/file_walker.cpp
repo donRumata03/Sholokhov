@@ -20,8 +20,6 @@ vector<std::string> recursive_lsdir(const string& string_path)
 		res.push_back(p.string());
 	}
 
-	
-
 	return res;
 }
 
@@ -31,7 +29,6 @@ vector<std::string> lsdir(const string& string_path)
 	vector<fs::path> subdirs;
 	const fs::path path = string_path;
 
-	cout << path << endl;
 
 	fs::directory_iterator start(string_path);
 	fs::directory_iterator _end;

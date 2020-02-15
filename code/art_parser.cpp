@@ -1,5 +1,8 @@
 #include "art_parser.h"
 
+
+vector<author_books> all_author_books;
+
 vector<string> get_all_art_files()
 {
 	auto alls = find_files(R"(D:\Projects\Sholokhov\data\decoded\other)", ".txt");
@@ -80,15 +83,20 @@ map<string, pair<double, double>> count_freqs(vector<string>& artwork1, vector<s
 }
 
 
-vector<string> parse_text(const string& filename)
+vector<string> parse_data(const string& data)
 {
-	auto raw_data = readFile(filename);
-	vector<string> splitted = split_words(raw_data);
+	vector<string> splitted = split_words(data);
 	vector<string> res;
-	
+
 	for (auto& s : splitted) if (!is_rus_capital(s[0])) res.push_back(s);
 
 	return res;
+}
+
+
+vector<string> parse_text(const string& filename)
+{
+	return parse_data(readFile(filename));
 }
 
 
@@ -120,33 +128,44 @@ pair<vector<string>, vector<string>> get_sholokhov_texts()
 	return {don, others};
 }
 
-map<string, pair<double, double>> get_logariphmated_freqs(map<string, pair<double, double>>& data)
+vector<string> get_author_paths()
 {
-	double min_freq = 1;
-	for(auto& p : data) {
-		min_freq = min(min_freq, ((p.second.first == 0) ? (1.0) : (p.second.first)));
-		min_freq = min(min_freq, ((p.second.second == 0) ? (1.0) : (p.second.second)));
-	}
-
-	map<string, pair<double, double>> res;
-	for (auto& p : data) {
-		if (p.second.first != 0 || p.second.second != 0) res[p.first] = {
-			(p.second.first == 0) ? (log(min_freq / 10)) : (log(p.second.first)),
-			(p.second.second == 0) ? (log(min_freq / 10)) : (log(p.second.second)),
-		};
-	}
-	return res;
+	string base = R"(D:\Projects\Literature_analyzer\res\Books\Loading)";
+	return lsdir(base);
 }
 
-void plot_sholokhov_data()
+void load_author_books()
 {
-	auto [don, others] = get_sholokhov_texts();
-	auto params = get_all_nareches();
-	auto freqs = count_freqs(don, others, params);
-	auto logged = get_logariphmated_freqs(freqs);
-	cout << logged << endl;
-	pms for_plot;
-	for (auto& p : logged) for_plot.push_back({ p.second.first, p.second.second });
-	add_to_plot(for_plot, "green", "scatter");
-	show_plot();
+	vector<string> paths = get_author_paths();
+	for(auto& author_path : paths) {
+		author_books &this_author = all_author_books.emplace_back();
+		this_author.path = author_path;
+		this_author.name = split(author_path, {'\\', '/'}).back();
+		// cout << this_author.name << " " << this_author.path << " " << endl;
+		vector<string> dirs;
+		try {
+			dirs = lsdir(author_path);
+		}
+		catch (exception & e) {
+			cout << e.what() << endl;
+		}
+		for(auto& artwork_path : dirs) {
+			artwork& this_artwork = this_author.artworks.emplace_back();
+			this_artwork.path = artwork_path;
+			this_artwork.name = split(artwork_path, {'/', '\\'}).back();
+			string text_path = this_artwork.path + "\\text.txt";
+
+			// cout << text_path << endl;
+			
+			if (find_files(artwork_path, ".txt").empty()) continue;
+
+			
+			string raw_data = readFile(text_path);
+			
+			this_artwork.content = parse_data(raw_data);
+			
+			// cout << this_author.name << " " << this_artwork.name << endl;
+		}
+	}
 }
+
