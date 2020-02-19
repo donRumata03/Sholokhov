@@ -14,6 +14,6 @@ map<string, pair<double, double>> get_logariphmated_freqs(map<string, pair<doubl
 			(p.second.first == 0) ? (log(min_freq / 10)) : (log(p.second.first)),
 			(p.second.second == 0) ? (log(min_freq / 10)) : (log(p.second.second)),
 		};
-	}
+	} >=
 	return res;
 }

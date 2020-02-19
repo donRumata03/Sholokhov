@@ -15,7 +15,7 @@ inline void pre_estimove_points(map<string, pair<double, double>>& data)
 {
 	for(auto &p : data) {
 		double x = p.second.first, y = p.second.second;
-		double k = square(x) + square(y);
+		double k = sqrt(exp(x)) + sqrt(exp(y));
 		auto d = point_line_dist({ x, y });
 		double sgn_k = (x > y) ? (-1) : (1);
 
@@ -34,8 +34,8 @@ inline double estimate_sigma(map<string, pair<double, double>>& data)
 {
 	vector<double> vals;
 	vals.reserve(data.size());
-	for (auto& p : data) vals.push_back(point_line_dist({ p.second.first, p.second.second }));
-	double s = sigma(vals);
+	for (auto& p : data) vals.push_back(point_line_dist({ p.second.first, p.second.second }) * sgn(p.second.first - p.second.second));
+	double s = square(sigma(vals));
 	return s;
 }
 
